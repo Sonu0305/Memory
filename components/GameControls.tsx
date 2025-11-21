@@ -2,20 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { deleteGameState } from '@/actions/gameState';
 
 interface GameControlsProps {
     userId: string;
+    onRestart: () => void;
 }
 
-export default function GameControls({ userId }: GameControlsProps) {
+export default function GameControls({ userId, onRestart }: GameControlsProps) {
     const router = useRouter();
 
-    const handleRestart = async () => {
-        if (confirm('Are you sure you want to restart? Your current progress will be lost.')) {
-            await deleteGameState(userId);
-            router.refresh();
-        }
+    const handleRestart = () => {
+        onRestart();
     };
 
     const handleBackHome = () => {

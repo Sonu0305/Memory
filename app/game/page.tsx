@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import GameBoard from '@/components/GameBoard';
 import GameControls from '@/components/GameControls';
 import PlayerProfile from '@/components/PlayerProfile';
 import { getUserId, clearUserId } from '@/utils/localStorage';
 import { getProfile } from '@/actions/profile';
-import { loadGameState } from '@/actions/gameState';
+import { loadGameState, deleteGameState } from '@/actions/gameState';
 import { getUserImages } from '@/actions/images';
 import { initializeGame, getRequiredImageCount } from '@/lib/gameLogic';
 import type { Profile, GameState, GridSize } from '@/lib/types';
@@ -37,6 +37,7 @@ const DEFAULT_IMAGES = [
 
 export default function GamePage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [gameState, setGameState] = useState<GameState | null>(null);
@@ -44,6 +45,7 @@ export default function GamePage() {
 
     useEffect(() => {
         const initializePage = async () => {
+            setLoading(true);
             const userId = getUserId();
 
             if (!userId) {
@@ -72,7 +74,7 @@ export default function GamePage() {
                     ? userImages.map(img => img.blob_url)
                     : DEFAULT_IMAGES;
 
-                const newGame = initializeGame(userId, imageUrls, gridSize);
+                const newGame = initializeGame(userId, imageUrls, 4);
                 setGameState(newGame);
             }
 
@@ -80,7 +82,7 @@ export default function GamePage() {
         };
 
         initializePage();
-    }, [router, gridSize]);
+    }, [router, searchParams]);
 
     const handleGridSizeChange = async (newSize: GridSize) => {
         if (confirm('Changing grid size will start a new game. Continue?')) {
@@ -95,6 +97,24 @@ export default function GamePage() {
                 : DEFAULT_IMAGES;
 
             const newGame = initializeGame(userId, imageUrls, newSize);
+            setGameState(newGame);
+        }
+    };
+
+    const handleRestart = async () => {
+        if (confirm('Are you sure you want to restart? Your current progress will be lost.')) {
+            const userId = getUserId();
+            if (!userId) return;
+
+            await deleteGameState(userId);
+
+            // Start new game with current grid size
+            const userImages = await getUserImages(userId);
+            const imageUrls = userImages.length >= getRequiredImageCount(gridSize)
+                ? userImages.map(img => img.blob_url)
+                : DEFAULT_IMAGES;
+
+            const newGame = initializeGame(userId, imageUrls, gridSize);
             setGameState(newGame);
         }
     };
@@ -153,11 +173,11 @@ export default function GamePage() {
                 </motion.div>
 
                 {/* Game Board */}
-                <GameBoard initialGameState={gameState} />
+                <GameBoard key={gameState.startedAt} initialGameState={gameState} onPlayAgain={handleRestart} />
 
                 {/* Controls */}
                 <div className="mt-8">
-                    <GameControls userId={profile.id} />
+                    <GameControls userId={profile.id} onRestart={handleRestart} />
                 </div>
             </div>
         </div>

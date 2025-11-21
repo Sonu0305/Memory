@@ -2,20 +2,20 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { deleteGameState } from '@/actions/gameState';
 
 interface WinModalProps {
     moves: number;
     userId: string;
     onClose: () => void;
+    onPlayAgain: () => void;
 }
 
-export default function WinModal({ moves, userId, onClose }: WinModalProps) {
+export default function WinModal({ moves, userId, onClose, onPlayAgain }: WinModalProps) {
     const router = useRouter();
 
-    const handlePlayAgain = async () => {
-        await deleteGameState(userId);
-        router.push('/game');
+    const handlePlayAgain = () => {
+        onPlayAgain();
+        onClose();
     };
 
     const confettiColors = ['#0ea5e9', '#d946ef', '#22c55e', '#f59e0b', '#ec4899'];

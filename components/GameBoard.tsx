@@ -11,9 +11,10 @@ import type { Tile, GameState } from '@/lib/types';
 interface GameBoardProps {
     initialGameState: GameState;
     onGameComplete?: () => void;
+    onPlayAgain?: () => void;
 }
 
-export default function GameBoard({ initialGameState, onGameComplete }: GameBoardProps) {
+export default function GameBoard({ initialGameState, onGameComplete, onPlayAgain }: GameBoardProps) {
     const [gameState, setGameState] = useState<GameState>(initialGameState);
     const [flippedTiles, setFlippedTiles] = useState<Tile[]>([]);
     const [isChecking, setIsChecking] = useState(false);
@@ -104,6 +105,11 @@ export default function GameBoard({ initialGameState, onGameComplete }: GameBoar
         }
     };
 
+    const handlePlayAgain = () => {
+        setShowWinModal(false);
+        onPlayAgain?.();
+    };
+
     const gridCols = gameState.gridSize === 4 ? 'grid-cols-4' : 'grid-cols-6';
 
     return (
@@ -161,6 +167,7 @@ export default function GameBoard({ initialGameState, onGameComplete }: GameBoar
                     moves={gameState.moves}
                     userId={gameState.userId}
                     onClose={() => setShowWinModal(false)}
+                    onPlayAgain={handlePlayAgain}
                 />
             )}
         </>
