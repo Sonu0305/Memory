@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import GameBoard from '@/components/GameBoard';
 import GameControls from '@/components/GameControls';
@@ -37,7 +37,6 @@ const DEFAULT_IMAGES = [
 
 export default function GamePage() {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [gameState, setGameState] = useState<GameState | null>(null);
@@ -82,7 +81,7 @@ export default function GamePage() {
         };
 
         initializePage();
-    }, [router, searchParams]);
+    }, [router]);
 
     const handleGridSizeChange = async (newSize: GridSize) => {
         if (confirm('Changing grid size will start a new game. Continue?')) {
