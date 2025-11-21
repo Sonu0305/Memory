@@ -20,7 +20,6 @@ const DEFAULT_IMAGES = [
     'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1472491235688-bdc81a63246e?w=400&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1573865526739-10c1dd7228d3?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1501820488136-72669149e0d4?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1535930891776-0c2dfb7fda1a?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400&h=400&fit=crop',
