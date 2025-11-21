@@ -14,6 +14,7 @@ export default function HomePage() {
     const [loading, setLoading] = useState(true);
     const [hasExistingGame, setHasExistingGame] = useState(false);
     const [existingUserId, setExistingUserId] = useState<string | null>(null);
+    const [isActiveSession, setIsActiveSession] = useState(false);
 
     useEffect(() => {
         const checkExistingUser = async () => {
@@ -27,6 +28,7 @@ export default function HomePage() {
                 const profile = await getOrCreateProfile(userId);
                 if (profile) {
                     setName(profile.name);
+                    setIsActiveSession(true); // Mark as active session
                 }
             }
             setLoading(false);
@@ -153,14 +155,14 @@ export default function HomePage() {
                         <div className="space-y-6">
                             <div className="text-center">
                                 <h2 className="text-2xl font-bold text-white mb-2">
-                                    {name ? `Welcome back, ${name}!` : 'Welcome!'}
+                                    {isActiveSession ? `Welcome back, ${name}!` : 'Welcome!'}
                                 </h2>
                                 <p className="text-white/60">
-                                    {name ? 'Ready to play?' : 'Enter your name to start'}
+                                    {isActiveSession ? 'Ready to play?' : 'Enter your name to start'}
                                 </p>
                             </div>
 
-                            {!name && (
+                            {!isActiveSession && (
                                 <div>
                                     <label htmlFor="name" className="block text-white/80 mb-2 font-medium">
                                         Your Name
