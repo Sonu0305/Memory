@@ -58,6 +58,35 @@ export async function getProfile(id: string): Promise<Profile | null> {
 }
 
 /**
+ * Get a profile by name
+ */
+export async function getProfileByName(name: string): Promise<Profile | null> {
+    try {
+        const supabase = createServerClient();
+
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('name', name)
+            .single();
+
+        if (error) {
+            if (error.code === 'PGRST116') {
+                // Profile not found
+                return null;
+            }
+            console.error('Error fetching profile by name:', error);
+            return null;
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Get profile by name error:', error);
+        return null;
+    }
+}
+
+/**
  * Update a profile's name
  */
 export async function updateProfileName(id: string, name: string): Promise<boolean> {

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
 import { getUserId, setUserId } from '@/utils/localStorage';
-import { getOrCreateProfile } from '@/actions/profile';
+import { getOrCreateProfile, getProfileByName } from '@/actions/profile';
 import { hasSavedGame, deleteGameState } from '@/actions/gameState';
 
 export default function HomePage() {
@@ -41,14 +41,21 @@ export default function HomePage() {
             return;
         }
 
-        let userId = existingUserId || getUserId();
-        if (!userId) {
+        // First, try to find existing user by name
+        const existingProfile = await getProfileByName(name.trim());
+
+        let userId: string;
+        if (existingProfile) {
+            // User exists, use their ID
+            userId = existingProfile.id;
+        } else {
+            // New user, create new ID
             userId = uuidv4();
-            setUserId(userId);
+            await getOrCreateProfile(userId, name.trim());
         }
 
-        // Create/update profile
-        await getOrCreateProfile(userId, name.trim());
+        // Save userId to localStorage
+        setUserId(userId);
 
         // Navigate to game
         router.push('/game');
