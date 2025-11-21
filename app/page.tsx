@@ -62,6 +62,7 @@ export default function HomePage() {
         if (existingUserId) {
             await deleteGameState(existingUserId);
             setHasExistingGame(false);
+            router.push('/game');
         }
     };
 

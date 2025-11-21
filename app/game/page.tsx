@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import GameBoard from '@/components/GameBoard';
 import GameControls from '@/components/GameControls';
 import PlayerProfile from '@/components/PlayerProfile';
-import { getUserId, clearUserId } from '@/utils/localStorage';
+import { getUserId } from '@/utils/localStorage';
 import { getProfile } from '@/actions/profile';
 import { loadGameState, deleteGameState } from '@/actions/gameState';
 import { getUserImages } from '@/actions/images';
@@ -118,8 +118,7 @@ export default function GamePage() {
     };
 
     const handleLogout = () => {
-        if (confirm('Are you sure you want to logout? Your game will be saved.')) {
-            clearUserId();
+        if (confirm('Return to home? Your game will be saved.')) {
             router.push('/');
         }
     };
