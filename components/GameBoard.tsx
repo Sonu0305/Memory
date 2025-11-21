@@ -159,6 +159,7 @@ export default function GameBoard({ initialGameState, onGameComplete }: GameBoar
             {showWinModal && (
                 <WinModal
                     moves={gameState.moves}
+                    userId={gameState.userId}
                     onClose={() => setShowWinModal(false)}
                 />
             )}

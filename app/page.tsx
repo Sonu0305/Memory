@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
 import { getUserId, setUserId } from '@/utils/localStorage';
 import { getOrCreateProfile } from '@/actions/profile';
-import { hasSavedGame } from '@/actions/gameState';
+import { hasSavedGame, deleteGameState } from '@/actions/gameState';
 
 export default function HomePage() {
     const router = useRouter();
@@ -58,8 +58,11 @@ export default function HomePage() {
         router.push('/game');
     };
 
-    const handleNewGame = () => {
-        setHasExistingGame(false);
+    const handleNewGame = async () => {
+        if (existingUserId) {
+            await deleteGameState(existingUserId);
+            setHasExistingGame(false);
+        }
     };
 
     if (loading) {

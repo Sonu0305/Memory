@@ -2,14 +2,21 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { deleteGameState } from '@/actions/gameState';
 
 interface WinModalProps {
     moves: number;
+    userId: string;
     onClose: () => void;
 }
 
-export default function WinModal({ moves, onClose }: WinModalProps) {
+export default function WinModal({ moves, userId, onClose }: WinModalProps) {
     const router = useRouter();
+
+    const handlePlayAgain = async () => {
+        await deleteGameState(userId);
+        router.push('/game');
+    };
 
     const confettiColors = ['#0ea5e9', '#d946ef', '#22c55e', '#f59e0b', '#ec4899'];
     const confettiPieces = Array.from({ length: 50 }, (_, i) => ({
@@ -115,7 +122,7 @@ export default function WinModal({ moves, onClose }: WinModalProps) {
                             Home
                         </button>
                         <button
-                            onClick={() => router.refresh()}
+                            onClick={handlePlayAgain}
                             className="flex-1 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-glow-accent hover:shadow-glow-accent hover:scale-105"
                         >
                             Play Again

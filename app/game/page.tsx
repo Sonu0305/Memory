@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import GameBoard from '@/components/GameBoard';
 import GameControls from '@/components/GameControls';
 import PlayerProfile from '@/components/PlayerProfile';
-import { getUserId } from '@/utils/localStorage';
+import { getUserId, clearUserId } from '@/utils/localStorage';
 import { getProfile } from '@/actions/profile';
 import { loadGameState } from '@/actions/gameState';
 import { getUserImages } from '@/actions/images';
@@ -99,6 +99,13 @@ export default function GamePage() {
         }
     };
 
+    const handleLogout = () => {
+        if (confirm('Are you sure you want to logout? Your game will be saved.')) {
+            clearUserId();
+            router.push('/');
+        }
+    };
+
     if (loading || !gameState || !profile) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -120,15 +127,15 @@ export default function GamePage() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                 >
-                    <PlayerProfile profile={profile} />
+                    <PlayerProfile profile={profile} onLogout={handleLogout} />
 
                     {/* Grid Size Selector */}
                     <div className="flex gap-2 bg-white/5 backdrop-blur-md rounded-xl p-2 border border-white/10">
                         <button
                             onClick={() => handleGridSizeChange(4)}
                             className={`px-4 py-2 rounded-lg font-medium transition-all ${gridSize === 4
-                                    ? 'bg-primary-500 text-white shadow-glow'
-                                    : 'text-white/60 hover:text-white hover:bg-white/10'
+                                ? 'bg-primary-500 text-white shadow-glow'
+                                : 'text-white/60 hover:text-white hover:bg-white/10'
                                 }`}
                         >
                             4×4
@@ -136,8 +143,8 @@ export default function GamePage() {
                         <button
                             onClick={() => handleGridSizeChange(6)}
                             className={`px-4 py-2 rounded-lg font-medium transition-all ${gridSize === 6
-                                    ? 'bg-primary-500 text-white shadow-glow'
-                                    : 'text-white/60 hover:text-white hover:bg-white/10'
+                                ? 'bg-primary-500 text-white shadow-glow'
+                                : 'text-white/60 hover:text-white hover:bg-white/10'
                                 }`}
                         >
                             6×6

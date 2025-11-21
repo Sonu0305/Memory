@@ -28,7 +28,7 @@ export interface GameState {
     tiles: Tile[];
     matchedPairs: number;
     moves: number;
-    gridSize: number; // 4 for 4x4, 6 for 6x6, etc.
+    gridSize: GridSize; // 4 for 4x4, 6 for 6x6
     customImages: string[]; // Array of blob URLs
     startedAt: string;
     lastPlayed: string;
