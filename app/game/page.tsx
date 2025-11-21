@@ -32,6 +32,7 @@ const DEFAULT_IMAGES = [
     'https://images.unsplash.com/photo-1501820488136-72669149e0d4?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?w=400&h=400&fit=crop',
+    'https://picsum.photos/400?random=3',
 ];
 
 export default function GamePage() {
