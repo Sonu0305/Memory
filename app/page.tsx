@@ -150,18 +150,17 @@ export default function HomePage() {
                             </div>
                         </div>
                     ) : (
-                        /* New Game UI */
                         <div className="space-y-6">
                             <div className="text-center">
                                 <h2 className="text-2xl font-bold text-white mb-2">
-                                    {existingUserId ? `Welcome back, ${name}!` : 'Welcome!'}
+                                    {name ? `Welcome back, ${name}!` : 'Welcome!'}
                                 </h2>
                                 <p className="text-white/60">
-                                    {existingUserId ? 'Ready to play?' : 'Enter your name to start'}
+                                    {name ? 'Ready to play?' : 'Enter your name to start'}
                                 </p>
                             </div>
 
-                            {!existingUserId && (
+                            {!name && (
                                 <div>
                                     <label htmlFor="name" className="block text-white/80 mb-2 font-medium">
                                         Your Name
@@ -181,10 +180,10 @@ export default function HomePage() {
 
                             <motion.button
                                 onClick={handleStartGame}
-                                disabled={!existingUserId && !name.trim()}
+                                disabled={!name.trim()}
                                 className="w-full py-4 bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold rounded-xl transition-all duration-200 shadow-glow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                                whileHover={{ scale: name.trim() || existingUserId ? 1.02 : 1 }}
-                                whileTap={{ scale: name.trim() || existingUserId ? 0.98 : 1 }}
+                                whileHover={{ scale: name.trim() ? 1.02 : 1 }}
+                                whileTap={{ scale: name.trim() ? 0.98 : 1 }}
                             >
                                 Start Game
                             </motion.button>
